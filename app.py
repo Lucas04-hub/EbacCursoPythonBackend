@@ -1,12 +1,13 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from typing import Optional
 
 app = FastAPI()
 
 minhas_tarefas = {}
 
 class Tarefa(BaseModel):
-    nome_tarefa: int
+    nome_tarefa: str
     descricao_tarefa: str
     concluida_tarefa: bool
 
@@ -24,7 +25,7 @@ def post_tarefas(tarefa: Tarefa):
     return {"message": "A tarefa foi criada com sucesso!"}
     
 @app.put("/concluir/{nome_tarefa}")
-def concluir_tarefa(nome_tarefa: int):
+def concluir_tarefa(nome_tarefa: str):
     tarefa = minhas_tarefas.get(nome_tarefa)
     if not tarefa:
         raise HTTPException(status_code=404, detail="Essa tarefa não foi encontrada!")
@@ -33,7 +34,7 @@ def concluir_tarefa(nome_tarefa: int):
     
 
 @app.delete("/deletar/{nome_tarefa}")
-def delete_tarefa(nome_tarefa: int):
+def delete_tarefa(nome_tarefa: str):
     if nome_tarefa not in minhas_tarefas:
         raise HTTPException(status_code=404, detail="Essa tarefa não foi encontrada!")
     del minhas_tarefas[nome_tarefa]
