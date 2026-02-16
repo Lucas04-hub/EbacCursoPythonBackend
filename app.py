@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from typing import List
 
 app = FastAPI()
 
@@ -10,9 +11,9 @@ class Tarefa(BaseModel):
     descricao_tarefa: str
     concluida_tarefa: bool = False
 
-minhas_tarefas = {}
+minhas_tarefas: List[Tarefa] = []
 
-def encontrar_tarefa(nome):
+def encontrar_tarefa(nome: str):
     return next((tarefa for tarefa in minhas_tarefas if tarefa.nome_tarefa == nome), None)
 
 @app.get("/tarefas")
