@@ -3,7 +3,7 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from pydantic import BaseModel
 from typing import Optional
 import secrets
-import os
+
 
 app = FastAPI()
 
@@ -22,7 +22,7 @@ class Tarefa(BaseModel):
 
 
 def encontrar_tarefa(nome: str):
-    return next((tarefa for tarefa in minhas_tarefas if tarefa.nome_tarefa == nome), None)
+    return minhas_tarefas.get(nome)
 
 def autenticar_meu_usuario(credentials: HTTPBasicCredentials = Depends(security)):
     is_username_correct = secrets.compare_digest(credentials.username, MEU_USUARIO)
@@ -39,6 +39,8 @@ def autenticar_meu_usuario(credentials: HTTPBasicCredentials = Depends(security)
 def listar_tarefas(page: int = 1, limit: int = 10, credentials: HTTPBasicCredentials = Depends(autenticar_meu_usuario)):
     if page < 1 or limit < 1:
         raise HTTPException(status_code=400, detail="Page ou limit estão com valores inválidos!!!")
+
+    tarefas = list(minhas_tarefas.values())
 
     if not minhas_tarefas:
         return {"message": "Não existe nenhuma tarefa!!!"}
@@ -57,22 +59,22 @@ def listar_tarefas(page: int = 1, limit: int = 10, credentials: HTTPBasicCredent
     return {
         "page": page,
         "limit": limit,
-        "total": len(minhas_tarefas),
-        "livros": tarefas_paginadas
+        "total": len(tarefas),
+        "livros": [tarefa.dict() for tarefa in tarefas_paginadas]
     }
 
 
 @app.post("/tarefas")
 def post_tarefa(tarefa: Tarefa):
-    if encontrar_tarefa(tarefa.nome_tarefa):
+    if tarefa.nome_tarefa in minhas_tarefas:
         raise HTTPException(status_code=400, detail="Essa tarefa já existe, colega!")
-    minhas_tarefas.append(tarefa)
+    minhas_tarefas[tarefa.nome_tarefa] = tarefa
     return {"message": "A tarefa foi criada com sucesso!"}
 
     
 @app.put("/tarefas/{nome_tarefa}/concluir")
 def concluir_tarefa(nome_tarefa: str):
-    tarefa = encontrar_tarefa(nome_tarefa)
+    tarefa = minhas_tarefas.get(nome_tarefa)
     if not tarefa:
         raise HTTPException(status_code=404, detail="Essa tarefa não foi encontrada!")
     tarefa.concluida_tarefa = True
@@ -81,8 +83,7 @@ def concluir_tarefa(nome_tarefa: str):
 
 @app.delete("/tarefas/{nome_tarefa}")
 def delete_tarefa(nome_tarefa: str):
-    tarefa = encontrar_tarefa(nome_tarefa)
-    if not tarefa:
+    if nome_tarefa not in minhas_tarefas:
         raise HTTPException(status_code=404, detail="Essa tarefa não foi encontrada!")
-    minhas_tarefas.remove(tarefa)
+    del minhas_tarefas[nome_tarefa]
     return {"message": "Sua tarefa foi deletada com sucesso!"}
