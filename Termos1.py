@@ -1,7 +1,13 @@
 # Estruturas Condicionais: Construções de programação que permitem a execução de diferentes blocos de código com base em condições específicas, como `if`, `elif` e `else` em Python.
+
 # Função Sort: Um método utilizado para ordenar elementos em uma lista, seja em ordem crescente ou decrescente, facilitando a organização e manipulação de dados.
+
 # Manipulação de Strings: O processo de alterar, formatar ou analisar strings, que são sequências de caracteres, utilizando técnicas como slicing para inverter ou modificar seu conteúdo.
+
 # Números Palíndromos: Números que permanecem os mesmos quando seus dígitos são invertidos, como 121 ou 1331, frequentemente verificados transformando o número em uma string.
+
 # Operadores de Módulo: Operadores que retornam o resto de uma divisão entre dois números, utilizados para determinar propriedades como paridade (número par ou ímpar).
+
 # Slicing: Uma técnica em Python para acessar partes de sequências, como listas ou strings, permitindo a extração de subsequências específicas.
+
 # Verificação de Aprovação: Um processo de avaliação que determina se um aluno passou ou não com base em suas notas, utilizando estruturas condicionais para implementar a lógica de decisão.

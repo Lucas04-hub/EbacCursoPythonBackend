@@ -16,22 +16,32 @@
 
 
 
+
 # Qual é a importância dos bancos de dados em sistemas modernos?: Bancos de dados são fundamentais para a organização, armazenamento e acesso eficiente a grandes volumes de informações. Eles são essenciais para o funcionamento de qualquer software que manipule dados de usuários, permitindo que as aplicações gerenciem informações de forma estruturada e acessível.
+
 
 # Quais são os dois principais tipos de bancos de dados?: Os dois principais tipos de bancos de dados são os relacionais (SQL) e os não relacionais (NoSQL). Bancos de dados relacionais, como MySQL e PostgreSQL, organizam dados em tabelas estruturadas, enquanto bancos de dados NoSQL, como o DynamoDB da AWS, oferecem flexibilidade na estruturação dos dados.
 
+
 # Quando devo usar um banco de dados relacional?: Bancos de dados relacionais são ideais para sistemas que requerem consistência e padronização, como CRMs e ERPs. Eles são adequados para aplicações que necessitam de uma estrutura rígida e relações bem definidas entre os dados.
+
 
 # Quais são as vantagens dos bancos de dados NoSQL?: Bancos de dados NoSQL oferecem flexibilidade na estruturação dos dados, sendo mais adequados para aplicações que não necessitam de uma estrutura rígida. Eles são ideais para o armazenamento de dados não estruturados, como conversas em aplicativos de mensagens.
 
+
 # Como os componentes de um servidor impactam o desempenho dos bancos de dados?: Componentes como CPU, memória e armazenamento impactam diretamente o desempenho dos bancos de dados. A compreensão desses elementos é essencial para otimizar o uso de recursos e garantir a eficiência das aplicações, permitindo que os sistemas funcionem de forma rápida e confiável.
+
 
 # O que é escalabilidade em bancos de dados?: Escalabilidade refere-se à capacidade de um sistema crescer para atender a um número crescente de usuários. A escalabilidade vertical envolve aumentar os recursos de hardware de um único banco de dados, enquanto a escalabilidade horizontal distribui a carga entre múltiplos bancos de dados.
 
+
 # Por que a estruturação dos dados é importante em bancos de dados relacionais?: A estruturação dos dados em bancos de dados relacionais, por meio de tabelas e relações estabelecidas por chaves estrangeiras, permite um gerenciamento eficiente das informações. Isso é crucial para manter a integridade e a consistência dos dados em sistemas complexos, como e-commerce e clínicas veterinárias.
+
 
 # Como a prática ajuda na compreensão dos conceitos de bancos de dados?: A prática é essencial para a compreensão completa do funcionamento dos bancos de dados. Implementar soluções eficientes e escaláveis, utilizando elementos como tabelas, JSON, documentos e coleções, ajuda os alunos a aplicar conceitos teóricos em problemas reais e a desenvolver habilidades práticas.
 
+
 # Quais habilidades são destacadas como essenciais no módulo?: O módulo destaca a compreensão das diferenças entre SQL e NoSQL, a otimização de recursos de servidor e a implementação de estratégias de escalabilidade como habilidades essenciais para o desenvolvimento de software eficiente e escalável.
+
 
 # Como posso decidir entre usar SQL ou NoSQL para minha aplicação?: A escolha entre SQL e NoSQL depende das necessidades específicas da sua aplicação. Se você precisa de consistência e padronização, um banco de dados relacional (SQL) pode ser mais adequado. Se sua aplicação requer flexibilidade e lida com dados não estruturados, um banco de dados NoSQL pode ser a melhor escolha.

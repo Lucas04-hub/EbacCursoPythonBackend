@@ -18,8 +18,11 @@
 
 
 
+
 # Quais são alguns dos problemas de manipulação de strings?: O módulo aborda problemas de manipulação de strings, como a contagem de segmentos em uma string e a verificação do uso correto de letras maiúsculas. Ferramentas do Python, como a função `split()` e o método `isupper()`, são apresentadas como soluções eficazes para esses problemas.
 
+
 # Como o módulo ensina a manipulação de arrays?: O módulo ensina a manipulação de arrays através de problemas que envolvem a identificação de elementos majoritários, o cálculo de médias de salários excluindo valores extremos, e a verificação de duplicatas em arrays. O uso de dicionários e loops é destacado como uma abordagem eficiente para resolver esses problemas.
+
 
 # Qual é a importância da prática contínua mencionada no módulo?: A prática contínua é enfatizada como essencial para o desenvolvimento do pensamento crítico e para enfrentar problemas complexos com confiança. O instrutor destaca a importância de não se desesperar diante de desafios difíceis e de continuar praticando para melhorar as habilidades de resolução de problemas.
