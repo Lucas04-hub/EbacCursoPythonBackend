@@ -4,7 +4,6 @@ from pydantic import BaseModel
 from typing import Optional
 import secrets
 
-
 app = FastAPI()
 
 MEU_USUARIO = "admin"
