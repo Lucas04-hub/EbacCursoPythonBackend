@@ -4,6 +4,18 @@ from pydantic import BaseModel
 from typing import Optional
 import secrets
 
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import Session
+
+DATABASE_URL = "sqlite:///./tarefas.db"
+
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+SessionLocal = sessionmaker(autoflush=False, bind=engine)
+Base = declarative_base()
+
 app = FastAPI()
 
 MEU_USUARIO = "admin"
@@ -13,11 +25,28 @@ security = HTTPBasic()
 
 minhas_tarefas = {}
 
+class TarefaDB(Base):
+    __tablename__ = "tarefas"
+
+    nome = Column(String, primary_key=True, index=True)
+    descricao = Column(String, index=True)
+    conluida = Column(String, index=True)
+
 class Tarefa(BaseModel):
     nome_tarefa: str
     descricao_tarefa: str
     concluida_tarefa: bool = False
 
+Base.metadata.create_all(bind=engine)
+
+
+
+def sessao_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 def encontrar_tarefa(nome: str):
@@ -35,54 +64,62 @@ def autenticar_meu_usuario(credentials: HTTPBasicCredentials = Depends(security)
         )
 
 @app.get("/tarefas")
-def listar_tarefas(page: int = 1, limit: int = 10, credentials: HTTPBasicCredentials = Depends(autenticar_meu_usuario)):
+def listar_tarefas(page: int = 1, limit: int = 10, db: Session = Depends(sessao_db), credentials: HTTPBasicCredentials = Depends(security)):
     if page < 1 or limit < 1:
         raise HTTPException(status_code=400, detail="Page ou limit estão com valores inválidos!!!")
+    
+    tarefas = db.query(TarefaDB).offset((page - 1) * limit).limit(limit).all()
 
-    tarefas = list(minhas_tarefas.values())
+    if not tarefas:
+        return {"message": "Não existe nenhum livro!!!"}
 
-    if not minhas_tarefas:
-        return {"message": "Não existe nenhuma tarefa!!!"}
 
-    tarefas_ordenadas = sorted(minhas_tarefas.items(), key=lambda x: x[0])
-
-    start = (page - 1) * limit
-    end = start + limit
-
-    tarefas_paginadas = [
-        {"nome_tarefa": tarefa_data["nome_tarefa"], "descricao_tarefa": tarefa_data["descricao_tarefa"], "concluida_tarefa": tarefa_data.get("concluida_tarefa", False)}
-        for id_tarefa, tarefa_data in tarefas_ordenadas[start:end]
-
-    ]
+    total_tarefas = db.query(TarefaDB).count()
 
     return {
         "page": page,
         "limit": limit,
-        "total": len(tarefas),
-        "livros": [tarefa.dict() for tarefa in tarefas_paginadas]
+        "total": total_tarefas,
+        "tarefas": [{"nome_tarefa": tarefa.nome_tarefa, "descricao_tarefa": tarefa.descricao_tarefa, "conluida_tarefa": tarefa.concluida_terfa} for tarefa in tarefas]
     }
 
 
 @app.post("/tarefas")
-def post_tarefa(tarefa: Tarefa):
-    if tarefa.nome_tarefa in minhas_tarefas:
-        raise HTTPException(status_code=400, detail="Essa tarefa já existe, colega!")
-    minhas_tarefas[tarefa.nome_tarefa] = tarefa
-    return {"message": "A tarefa foi criada com sucesso!"}
+def post_tarefa(tarefa: Tarefa, db: Session = Depends(sessao_db), credentials: HTTPBasicCredentials = Depends(security)):
+    db_tarefa = db.query(TarefaDB).filter(TarefaDB.nome_tarefa == TarefaDB.nome_tarefa, TarefaDB.descricao_tarefa == TarefaDB.descricao_tarefa).first()
+    if db_tarefa:
+        raise HTTPException(status_code=400, detail="Essa tarefa já existe dentro do banco de dados!!!")
+    
+    nova_tarefa = TarefaDB(nome_tarfea=TarefaDB.nome_livro, descricao_tarefa=TarefaDB.descricao_tarefa, concluida_tarefa=TarefaDB.concluida_tarefa)
+    db.add(nova_tarefa)
+    db.commit()
+    db.refresh(nova_tarefa)
 
+    return {"messgae": "A tarefa foi criada com sucesso!"}
     
 @app.put("/tarefas/{nome_tarefa}/concluir")
-def concluir_tarefa(nome_tarefa: str):
-    tarefa = minhas_tarefas.get(nome_tarefa)
-    if not tarefa:
-        raise HTTPException(status_code=404, detail="Essa tarefa não foi encontrada!")
-    tarefa.concluida_tarefa = True
-    return {"message": "A sua tarefa foi concluída com sucesso!"}
+def concluir_tarefa(nome_tarefa: str, tarefa: Tarefa, db: Session = Depends(sessao_db)):
+    db_tarefa = db.query(TarefaDB).filter(TarefaDB.nome == nome_tarefa).first()
+    if not db_tarefa:
+        raise HTTPException(status_code=400, details="Esta tarefa foi encontrada no seu banco de dados!")
 
+    db_tarefa.nome_tarefa = tarefa.nome_tarefa
+    db_tarefa.descricao_tarefa = tarefa.descricao_tarefa
+    db_tarefa.concluida_tarefa = tarefa.concluida_tarefa
+
+    db.commit()
+    db.refresh(db_tarefa)
+
+    return {"message": "A tarefa foi atualizada com sucesso!!!"}
 
 @app.delete("/tarefas/{nome_tarefa}")
-def delete_tarefa(nome_tarefa: str):
-    if nome_tarefa not in minhas_tarefas:
-        raise HTTPException(status_code=404, detail="Essa tarefa não foi encontrada!")
-    del minhas_tarefas[nome_tarefa]
+def delete_tarefa(nome_tarefa: str, db: Session = Depends(sessao_db), credentials: HTTPBasicCredentials = Depends(security)):
+    db_tarefa = db.query(TarefaDB).filter(TarefaDB.nome == nome_tarefa).filter()
+    
+    if not db_tarefa:
+        raise HTTPException(status_code=404, detail="Esta tarefa não foi encontrada no seu banco de dados!!!")
+    
+    db.delete(db_tarefa)
+    db.commit
+    
     return {"message": "Sua tarefa foi deletada com sucesso!"}
