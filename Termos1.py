@@ -11,3 +11,28 @@
 # Slicing: Uma técnica em Python para acessar partes de sequências, como listas ou strings, permitindo a extração de subsequências específicas.
 
 # Verificação de Aprovação: Um processo de avaliação que determina se um aluno passou ou não com base em suas notas, utilizando estruturas condicionais para implementar a lógica de decisão.
+
+
+# 
+
+# 
+
+# 
+
+# 
+
+# 
+
+# 
+
+# 
+
+# 
+
+# 
+
+# 
+
+# 
+
+# 
