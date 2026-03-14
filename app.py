@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker, Session
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from pydantic import BaseModel
+import os
 
 import secrets
 
@@ -17,8 +18,8 @@ Base = declarative_base()
 
 app = FastAPI()
 
-MEU_USUARIO = "admin"
-MINHA_SENHA = "admin"
+MEU_USUARIO = os.getenv("MEU_USUARIO")
+MINHA_SENHA = os.getenv("MINHA_SENHA")
 
 security = HTTPBasic()
 
