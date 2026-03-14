@@ -1,16 +1,16 @@
-[project]
+[tool.poetry]
 name = "todasasaulas"
 version = "0.1.0"
 description = ""
-authors = [
-    {name = "Lucas"}
-]
+authors = ["Lucas"]
+packages = [{ include = "todasasaulas" }]
 readme = "README.md"
-requires-python = ">=3.14"
-dependencies = [
-    "fastapi[standard] (>=0.129.0,<0.130.0)"
-]
 
+
+
+[tool.poetry.dependencies]
+python = ">=3.14"
+fastapi = {extras = ["standard"], version = ">=0.129.0,<0.130.0"}
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
