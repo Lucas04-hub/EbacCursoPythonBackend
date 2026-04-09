@@ -29,6 +29,7 @@
 
 # Como o Redis pode ser utilizado como cache?: O Redis pode ser utilizado como cache definindo políticas de expiração de cache e configurando o TTL (Time to Live) para garantir que os dados armazenados sejam atualizados eficientemente. Isso ajuda a evitar consultas frequentes ao banco de dados principal, melhorando a velocidade de resposta.
 
+
 # Quais são as estratégias de cache discutidas no módulo?: As estratégias de cache discutidas no módulo incluem Cache-Aside, Write Through e Write Behind. Cada uma dessas estratégias tem suas vantagens e aplicações específicas, dependendo do contexto e das necessidades do sistema.
 
 
